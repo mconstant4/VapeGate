@@ -1,4 +1,4 @@
-package com.example.nickp.cornellhack;
+package uri.egr.biosensing.vapegate;
 
 import android.os.Bundle;
 import android.widget.ListView;
