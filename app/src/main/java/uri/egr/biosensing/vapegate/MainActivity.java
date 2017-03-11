@@ -1,77 +1,101 @@
-package uri.egr.biosensing.vapegate;
+package com.example.nickp.cornellhack;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ButtonBarLayout;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import java.lang.ref.WeakReference;
-
-import uri.egr.biosensing.vapegate.receivers.VapeGateUpdateReceiver;
-import uri.egr.biosensing.vapegate.services.BandConnectionService;
-import uri.egr.biosensing.vapegate.services.VapeGateManagerService;
-import uri.egr.biosensing.vapegate.tasks.RequestHeartRateTask;
-
-public class MainActivity extends AppCompatActivity {
-    private boolean mConnected;
+public class MainActivity extends First
+        implements NavigationView.OnNavigationItemSelectedListener {
+    protected DrawerLayout mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
-        new RequestHeartRateTask().execute(new WeakReference<Activity>(this));
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
-        mConnected = false;
-        registerReceiver(mVapeGateUpdateReceiver, VapeGateUpdateReceiver.VAPE_GATE_INTENT_FILTER);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-        final Context context = this;
-        Button connectButton = (Button) findViewById(R.id.connect_button);
-        Button disconnectButton = (Button) findViewById(R.id.disconnect_button);
-
-        connectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BandConnectionService.connect(context);
-                VapeGateManagerService.connect(context);
-            }
-        });
-        disconnectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BandConnectionService.disconnect(context);
-                VapeGateManagerService.disconnect(context);
-            }
-        });
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
+        mDrawer = drawer;
     }
 
     @Override
-    protected void onDestroy() {
-        unregisterReceiver(mVapeGateUpdateReceiver);
-        super.onDestroy();
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    private VapeGateUpdateReceiver mVapeGateUpdateReceiver = new VapeGateUpdateReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.hasExtra(VapeGateUpdateReceiver.EXTRA_CONNECTION_UPDATE)) {
-                if (intent.getBooleanExtra(EXTRA_CONNECTION_UPDATE, false)) {
-                    mConnected = true;
-                    Log.d("MAIN", "Connected to Vape Gate");
-                } else {
-                    mConnected = false;
-                    Log.d("MAIN", "Disconnected from Vape Gate");
-                }
-            } else if (intent.hasExtra(VapeGateUpdateReceiver.EXTRA_READ_UPDATE)) {
-                byte[] data = intent.getByteArrayExtra(VapeGateUpdateReceiver.EXTRA_READ_UPDATE);
-                Log.d("MAIN", "Vape Gate: " + data[0] + " " + data[1]);
-            }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
-    };
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            Intent intent = new Intent(MainActivity.this, Home.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(MainActivity.this, Milestone.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(MainActivity.this, RevocStats.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(MainActivity.this, Settings.class);
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
