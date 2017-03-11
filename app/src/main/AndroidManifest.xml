@@ -18,6 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <service android:name=".services.BandConnectionService"/>
+        <service android:name=".services.BleConnectionService"/>
+        <service android:name=".services.VapeGateManagerService"/>
     </application>
 
 </manifest>
