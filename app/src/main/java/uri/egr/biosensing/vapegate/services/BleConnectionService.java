@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import uri.egr.biosensing.vapegate.gatt_attributes.GattDescriptors;
+import uri.egr.biosensing.vapegate.gatt_attributes.GattDevices;
 
 /**
  * Created by mcons on 3/11/2017.
@@ -198,13 +199,13 @@ public class BleConnectionService extends Service {
     }
 
 
-    public boolean connect(String bluetoothDeviceAddress) {
+    public boolean connect() {
         if (mBluetoothAdapter == null) {
             log("Bluetooth Adapter not initialized");
             return false;
         }
 
-        BluetoothDevice bluetoothDevice = mBluetoothAdapter.getRemoteDevice(bluetoothDeviceAddress);
+        BluetoothDevice bluetoothDevice = mBluetoothAdapter.getRemoteDevice(GattDevices.VAPE_GATE_DEVICE);
         if (bluetoothDevice == null) {
             log("Could not find device");
             return false;
@@ -214,33 +215,33 @@ public class BleConnectionService extends Service {
             log("Could not connect to device's Gatt Server");
             return false;
         }
-        log("Establishing connection to " + bluetoothDeviceAddress + "...");
+        log("Establishing connection to " + GattDevices.VAPE_GATE_DEVICE + "...");
         return true;
     }
 
-    public boolean disconnect(String bluetoothDeviceAddress) {
+    public boolean disconnect() {
         if (mBluetoothAdapter == null) {
             log("Bluetooth Adapter not initialized");
             return false;
         }
 
-        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(bluetoothDeviceAddress);
+        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(GattDevices.VAPE_GATE_DEVICE);
         if (bluetoothGatt == null) {
             log("Bluetooth Device's Gatt Server not Connected");
             return false;
         }
 
         bluetoothGatt.disconnect();
-        log("Disconnecting from " + bluetoothDeviceAddress + "...");
+        log("Disconnecting from " + GattDevices.VAPE_GATE_DEVICE + "...");
         return true;
     }
 
-    public boolean discoverServices(String bluetoothDeviceAddress) {
+    public boolean discoverServices() {
         if (mBluetoothAdapter == null) {
             log("Bluetooth Adapter not initialized");
             return false;
         }
-        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(bluetoothDeviceAddress);
+        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(GattDevices.VAPE_GATE_DEVICE);
         if (bluetoothGatt == null) {
             log("Bluetooth Device's Gatt Server not Connected");
             return false;
@@ -250,13 +251,13 @@ public class BleConnectionService extends Service {
         return bluetoothGatt.discoverServices();
     }
 
-    public boolean readCharacteristic(String bluetoothDeviceAddress, BluetoothGattCharacteristic characteristic) {
+    public boolean readCharacteristic(BluetoothGattCharacteristic characteristic) {
         if (mBluetoothAdapter == null) {
             log("Bluetooth Adapter not initialized");
             return false;
         }
 
-        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(bluetoothDeviceAddress);
+        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(GattDevices.VAPE_GATE_DEVICE);
         if (bluetoothGatt == null) {
             log("Bluetooth Device's Gatt Server not Connected");
             return false;
@@ -271,13 +272,13 @@ public class BleConnectionService extends Service {
         return bluetoothGatt.readCharacteristic(characteristic);
     }
 
-    public boolean writeCharacteristic(String bluetoothDeviceAddress, BluetoothGattCharacteristic characteristic, byte[] value) {
+    public boolean writeCharacteristic(BluetoothGattCharacteristic characteristic, byte[] value) {
         if (mBluetoothAdapter == null) {
             log("Bluetooth Adapter not initialized");
             return false;
         }
 
-        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(bluetoothDeviceAddress);
+        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(GattDevices.VAPE_GATE_DEVICE);
         if (bluetoothGatt == null) {
             log("Bluetooth Device's Gatt Server not Connected");
             return false;
@@ -296,13 +297,13 @@ public class BleConnectionService extends Service {
         return bluetoothGatt.writeCharacteristic(characteristic);
     }
 
-    public BluetoothGattService getService(String bluetoothDeviceAddress, UUID serviceUUID) {
+    public BluetoothGattService getService(UUID serviceUUID) {
         if (mBluetoothAdapter == null) {
             log("Bluetooth Adapter not initialized");
             return null;
         }
 
-        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(bluetoothDeviceAddress);
+        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(GattDevices.VAPE_GATE_DEVICE);
         if (bluetoothGatt == null) {
             log("Bluetooth Device's Gatt Server not Connected");
             return null;
@@ -316,8 +317,8 @@ public class BleConnectionService extends Service {
         return service;
     }
 
-    public BluetoothGattCharacteristic getCharacteristic(String bluetoothDeviceAddress, UUID serviceUUID, UUID characteristicUUID) {
-        BluetoothGattService service = getService(bluetoothDeviceAddress, serviceUUID);
+    public BluetoothGattCharacteristic getCharacteristic(UUID serviceUUID, UUID characteristicUUID) {
+        BluetoothGattService service = getService(serviceUUID);
         if (service == null) {
             return null;
         }
@@ -329,13 +330,13 @@ public class BleConnectionService extends Service {
         return characteristic;
     }
 
-    public boolean enableNotifications(String bluetoothDeviceAddress, BluetoothGattCharacteristic characteristic) {
+    public boolean enableNotifications(BluetoothGattCharacteristic characteristic) {
         if (mBluetoothAdapter == null) {
             log("Bluetooth Adapter not initialized");
             return false;
         }
 
-        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(bluetoothDeviceAddress);
+        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(GattDevices.VAPE_GATE_DEVICE);
         if (bluetoothGatt == null) {
             log("Bluetooth Device's Gatt Server not Connected");
             return false;
@@ -363,13 +364,13 @@ public class BleConnectionService extends Service {
         return true;
     }
 
-    public boolean disableNotifications(String bluetoothDeviceAddress, BluetoothGattCharacteristic characteristic) {
+    public boolean disableNotifications(BluetoothGattCharacteristic characteristic) {
         if (mBluetoothAdapter == null) {
             log("Bluetooth Adapter not initialized");
             return false;
         }
 
-        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(bluetoothDeviceAddress);
+        BluetoothGatt bluetoothGatt = mBluetoothGattList.get(GattDevices.VAPE_GATE_DEVICE);
         if (bluetoothGatt == null) {
             log("Bluetooth Device's Gatt Server not Connected");
             return false;
