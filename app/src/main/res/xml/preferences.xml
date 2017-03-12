@@ -5,4 +5,9 @@
         android:key="vapegate_enable"
         android:defaultValue="false"
         android:title="Enable VapeGate"/>
+    <SwitchPreference
+        android:id="@+id/daily_drags"
+        android:key="daily_drags"
+        android:defaultValue="0"
+        android:title="Enable VapeGate"/>
 </PreferenceScreen>
