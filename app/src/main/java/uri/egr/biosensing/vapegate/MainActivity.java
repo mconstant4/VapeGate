@@ -12,6 +12,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends First
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    protected int hits;
     protected DrawerLayout mDrawer;
 
     @Override
@@ -87,7 +89,7 @@ public class MainActivity extends First
             Intent intent = new Intent(MainActivity.this, Milestone.class);
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(MainActivity.this, RevocStats.class);
+            Intent intent = new Intent(MainActivity.this, Date.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(MainActivity.this, Settings.class);

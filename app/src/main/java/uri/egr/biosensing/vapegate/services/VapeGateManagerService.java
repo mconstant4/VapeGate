@@ -1,6 +1,5 @@
 package uri.egr.biosensing.vapegate.services;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.BroadcastReceiver;
@@ -57,6 +56,9 @@ public class VapeGateManagerService extends Service {
                     Intent updateIntent = new Intent(VapeGateUpdateReceiver.VAPE_GATE_INTENT_FILTER.getAction(0));
                     updateIntent.putExtra(VapeGateUpdateReceiver.EXTRA_READ_UPDATE, data);
                     sendBroadcast(updateIntent);
+
+                    //Update daily hits
+
 
                     //Send to Watson
 

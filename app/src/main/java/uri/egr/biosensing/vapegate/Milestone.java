@@ -13,7 +13,7 @@ public class Milestone extends First
 {
     ListView list;
     String title[] = {"20 Mins", "2 Hours", "12 Hours", "24 Hours", "2 Days", "3 Days", "2 Weeks",
-                        "5 Months", "1 Year", "5 Years", "10 Years", "15 Years"};
+                        "6 Months", "1 Year", "5 Years", "10 Years", "15 Years"};
     String desc[] = {"Your Heart Rate has started to drop back to normal levels!",
                         "Your heart rate and blood pressure should be back to normal levels, get ready for the cravings.",
                         "Carbon Monoxide levels in your body have started to drop, try going for a jog!",

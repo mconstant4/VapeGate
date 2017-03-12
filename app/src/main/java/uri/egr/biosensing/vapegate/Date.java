@@ -6,9 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Created by nickp on 3/11/2017.
@@ -17,7 +15,7 @@ import java.util.Scanner;
 public class Date extends MainActivity
 {
     ListView dates;
-    String date[] = {"03/10/2017", "03/11/2017", "03/12/2017"};
+    String testDates[] = {"03/10/2017", "03/11/2017", "03/12/2017"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,9 +27,10 @@ public class Date extends MainActivity
 
         final ArrayList<DateListEntry> date = new ArrayList<DateListEntry>();
 
-        for(int count=0; count < date.size(); count++)
+        for(int count=0; count < testDates.length; count++)
         {
-
+            DateListEntry test = new DateListEntry(testDates[count]);
+            date.add(test);
         }
 
         dates.setAdapter(new DateListAdapt(getApplicationContext(), R.layout.date_list, date));
