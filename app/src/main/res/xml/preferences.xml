@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:id="@+id/enable_vapegate"
+        android:key="vapegate_enable"
+        android:defaultValue="false"
+        android:text="Enable VapeGate"/>
+</PreferenceScreen>
